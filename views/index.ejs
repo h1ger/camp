@@ -1,0 +1,8 @@
+<% include ./partials/header %>
+
+<% campgrounds.forEach(function(campground){%>
+    <h3><%=campground.title %></h3>
+    <img src="<%=campground._image%>" alt="user_img">
+    <p><%=campground.info%></p>
+    <a href="/campgrounds/camp/<%=campground._id%>">More info...</a>
+<% }) %>

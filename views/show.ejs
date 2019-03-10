@@ -1,0 +1,17 @@
+<%= showCamp.title %>
+<img src="<%=showCamp._image%>" alt="user_image">
+<%= showCamp.info%>
+
+<%showCamp.comment.forEach(function(comment){%>
+    <%=comment.name%>
+    <%=comment.content%>
+<a href="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>/edit">Edit</a>
+<form action="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
+    <button>Delete Post</button>
+</form>
+<%})%>
+<a href="/campgrounds/camp/<%=showCamp._id%>/comment/new">Comment</a>
+<a href="/campgrounds/camp/<%=showCamp._id%>/edit">Edit</a>
+<form action="/campgrounds/camp/<%=showCamp._id%>?_method=DELETE" method="POST">
+<button>Remove</button>
+</form>
