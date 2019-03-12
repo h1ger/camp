@@ -1,17 +1,25 @@
-<%= showCamp.title %>
-<img src="<%=showCamp._image%>" alt="user_image">
-<%= showCamp.info%>
+<% include ./partials/header %>
+<div class="container">
+    
+    <div class="text-center rounded w-15">
+        <h2><%= showCamp.title %></h2>
+        <img class="img-thumbnail " src="<%=showCamp._image%>" alt="user_image">
+        <p><%= showCamp.info%></p>
+    </div>
+    
+    <%showCamp.comment.forEach(function(comment){%>
+        <p><a href="#"><%=comment.name%></a></p>
+        <p><%=comment.content%></p>
+    <a class="btn btn-primary"href="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>/edit">Edit</a>
+    <form action="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
+        <button class="btn btn-primary">Delete Post</button>
+    </form>
+    <%})%>
+    <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/comment/new">Comment</a>
+    <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/edit">Edit</a>
+    <form action="/campgrounds/camp/<%=showCamp._id%>?_method=DELETE" method="POST">
+    <button class="btn btn-info">Remove</button>
+    </form>
+</div>
 
-<%showCamp.comment.forEach(function(comment){%>
-    <%=comment.name%>
-    <%=comment.content%>
-<a href="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>/edit">Edit</a>
-<form action="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
-    <button>Delete Post</button>
-</form>
-<%})%>
-<a href="/campgrounds/camp/<%=showCamp._id%>/comment/new">Comment</a>
-<a href="/campgrounds/camp/<%=showCamp._id%>/edit">Edit</a>
-<form action="/campgrounds/camp/<%=showCamp._id%>?_method=DELETE" method="POST">
-<button>Remove</button>
-</form>
+<% include ./partials/footer %>

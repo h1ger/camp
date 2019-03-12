@@ -2,6 +2,7 @@
 <form action="/campgrounds/camp/<%=editCamp._id%>?_method=PUT" method="POST">
     <input type="text" name="camp[title]" required value="<%=editCamp.title%>">
     <input type="text" name="camp[_image]" value="<%=editCamp._image%>">
-    <input type="text" name="camp[info]" value="<%=editCamp.info%>">
+    <!--<input type="text" name="camp[info]" value="<%=editCamp.info%>"> -->
+    <textarea name="info" rows="5" cols="100"><%=editCamp.info%></textarea>
     <button>Submit</button>
 </form>
