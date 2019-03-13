@@ -8,11 +8,11 @@
     </div>
     
     <%showCamp.comment.forEach(function(comment){%>
-        <p><a href="#"><%=comment.name%></a></p>
+        <p><a href="#"><%=comment.username.username%></a></p>
         <p><%=comment.content%></p>
-    <a class="btn btn-primary"href="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>/edit">Edit</a>
+    <a class="btn btn-primary" href="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>/edit">Edit</a>
     <form action="/campgrounds/camp/<%=showCamp._id%>/comment/<%=comment._id%>?_method=DELETE" method="POST">
-        <button class="btn btn-primary">Delete Post</button>
+        <button class="btn btn-primary">Delete Comment</button>
     </form>
     <%})%>
     <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/comment/new">Comment</a>

@@ -42,6 +42,11 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+app.use(function (req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
+
 // Landing
 app.get('/', function(req, res){
     res.render('landing');
@@ -53,18 +58,19 @@ app.get('/campgrounds', function(req, res){
         if(error){
             console.log(error);
         } else {
-            res.render('index', {campgrounds: campgrounds});
+            console.log(req.user);
+            res.render('index', {campgrounds: campgrounds, currentUser: req.user});
         }
     });
 });
 
 // New Route
-app.get('/campgrounds/new', function(req, res){
+app.get('/campgrounds/new', isLoggedIn, function(req, res){
     res.render('new');
 });
 
 // Create Route
-app.post('/campgrounds', function(req, res){
+app.post('/campgrounds', isLoggedIn, function(req, res){
     var camp = {
         title: req.body.title,
         _image: req.body._image,
@@ -92,7 +98,7 @@ app.get('/campgrounds/camp/:id', function(req, res){
 });
 
 // Edit Route
-app.get('/campgrounds/camp/:id/edit', function(req, res){
+app.get('/campgrounds/camp/:id/edit', isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(error, editCamp){
         if(error) {
             console.log(req.params.id);
@@ -103,7 +109,7 @@ app.get('/campgrounds/camp/:id/edit', function(req, res){
     })
 })
 // Update Route
-app.put('/campgrounds/camp/:id', function(req, res){
+app.put('/campgrounds/camp/:id', isLoggedIn, function(req, res){
     Campground.findByIdAndUpdate(req.params.id, req.body.camp, function(error, editCamp){
         if(error) {
             console.log(req.params.id +'Put Route');
@@ -115,7 +121,7 @@ app.put('/campgrounds/camp/:id', function(req, res){
 })
 
 // Delete Route
-app.delete('/campgrounds/camp/:id', function(req, res){
+app.delete('/campgrounds/camp/:id', isLoggedIn,function(req, res){
     Campground.findByIdAndRemove(req.params.id, function(error){
         if(error){
             console.log(error); 
@@ -130,7 +136,7 @@ app.delete('/campgrounds/camp/:id', function(req, res){
 // Comment Route
 
 // New Route
-app.get('/campgrounds/camp/:id/comment/new', function(req, res){
+app.get('/campgrounds/camp/:id/comment/new', isLoggedIn, function(req, res){
     Campground.findById(req.params.id, function(error, camp){
         if(error){
             console.log(error);
@@ -142,7 +148,7 @@ app.get('/campgrounds/camp/:id/comment/new', function(req, res){
 })
 
 // Create Route
-app.post('/campgrounds/camp/:id/comment', function (req, res) {
+app.post('/campgrounds/camp/:id/comment', isLoggedIn, function (req, res) {
     Campground.findById(req.params.id, function (error, camp) {
         if(error){
             console.log(error);
@@ -151,8 +157,11 @@ app.post('/campgrounds/camp/:id/comment', function (req, res) {
             Comment.create(req.body.comment, function (error, comments) {
                 if(error){
                     console.log(error);
-                    console.log(comments);
                 } else {
+                    comments.username.id = req.user._id;
+                    comments.username.username = req.user.username;
+                    comments.save();
+                    console.log(comments +"@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");     
                     camp.comment.push(comments);
                     camp.save();
                     res.redirect('/campgrounds/camp/'+req.params.id);
@@ -163,7 +172,7 @@ app.post('/campgrounds/camp/:id/comment', function (req, res) {
 });
 
 // Edit Route
-app.get('/campgrounds/camp/:id/comment/:comment_id/edit', function(req,res){
+app.get('/campgrounds/camp/:id/comment/:comment_id/edit', isLoggedIn, function(req,res){
     Comment.findById(req.params.comment_id, function(error, commentEdit){
         if(error){
             console.log(error); 
@@ -174,7 +183,7 @@ app.get('/campgrounds/camp/:id/comment/:comment_id/edit', function(req,res){
 });
 
 // Put Route
-app.put('/campgrounds/camp/:id/comment/:comment_id', function(req, res){
+app.put('/campgrounds/camp/:id/comment/:comment_id', isLoggedIn, function(req, res){
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function (error, commentPut) {
         if(error){
             console.log(error);
@@ -185,13 +194,12 @@ app.put('/campgrounds/camp/:id/comment/:comment_id', function(req, res){
 });
 
 // Delete Route
-app.delete('/campgrounds/camp/:id/comment/:comment_id', function (req, res) {
+app.delete('/campgrounds/camp/:id/comment/:comment_id', isLoggedIn, function (req, res) {
     Comment.findByIdAndRemove(req.params.comment_id, function (error, data) {
         if(error){
             console.log(error);
-            
         } else {
-            res.redirect('/campgrounds');
+            res.redirect('/campgrounds/camp/'+req.params.id);
         }
     });
 });
@@ -203,14 +211,14 @@ app.get('/register', function(req, res){
 });
 
 app.post('/register', function(req, res){
-    User.register(new User({username:req.body.username}), req.body.password, function(error, userData){
+    console.log(req.body.username);
+    User.register(new User({username: req.body.username}), req.body.password, function(error, userData){
         if(error){
             console.log(error);
             res.redirect('/register');
         } else {
             passport.authenticate("local")(req, res, function(){
                 console.log('Success registration!');
-                
                 res.redirect('/campgrounds');
             });
         }
@@ -228,6 +236,17 @@ app.post('/login', passport.authenticate("local", {
     
 });
 
+app.get('/logout', function(req, res){
+    req.logout();
+    res.redirect('/login');
+});
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next();
+    }
+    res.redirect('/login');
+}
 
 var port = 5000;
 app.listen(port, function(req, res){
