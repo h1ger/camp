@@ -28,7 +28,8 @@ app.use(session({
     saveUninitialized: true
 }));
 
-mongoose.connect('mongodb://localhost:27017/yelpcamp', {useNewUrlParser: true});
+var URI = ('mongodb://localhost:27017/yelpcamp' || )
+mongoose.connect(, {useNewUrlParser: true});
 mongoose.set(mongoose, {usefindAndModify: false});
 mongoose.set('debug', true)
 
@@ -248,7 +249,7 @@ function isLoggedIn(req, res, next){
     res.redirect('/login');
 }
 
-app.set('port', process.env.PORT || 3000);
+var port = process.env.port || 3000;
 app.listen(port, function(req, res){
     console.log('Serving Hot Coffee!');
 });
