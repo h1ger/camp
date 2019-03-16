@@ -1,5 +1,6 @@
 var express = require("express"),
     app = express(),
+    config = require("./config");
     bodyParser = require("body-parser"),
     methodOverride = require("method-override"),
     mongoose = require("mongoose"),
@@ -28,7 +29,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
-var URI = ('mongodb://localhost:27017/yelpcamp')
+var URI =  process.env.DATABASEURL || 'mongodb://localhost:27017/yelpcamp';
+console.log(process.env.DATABASEURL);
+console.log(URI);
+
 mongoose.connect(URI, {useNewUrlParser: true});
 mongoose.set(mongoose, {usefindAndModify: false});
 mongoose.set('debug', true);
