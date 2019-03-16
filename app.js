@@ -35,7 +35,7 @@ console.log(URI);
 
 mongoose.connect(URI, {useNewUrlParser: true});
 mongoose.set(mongoose, {usefindAndModify: false});
-mongoose.set('debug', true);
+// mongoose.set('debug', true);
 
 // PASSPORT
 
