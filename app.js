@@ -10,16 +10,16 @@ var express = require("express"),
     localStrategy = require("passport-local"),
     passport = require("passport"),
     path = require("path"),
-    cors = require("cors"),
+    helmet = require("helmet"),
     User = require("./mongomodel/index"),
     errorHandler = require("errorhandler");
 
 
 app.set('view engine', 'ejs');
-// app.use(cors())
-// app.use(require('morgan')('dev'));
+app.use(helmet());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use('/scripts', express.static(path.join(__dirname, 'scripts')));
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(methodOverride('_method'));
 app.use(session({
@@ -28,10 +28,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
-var URI = ('mongodb://localhost:27017/yelpcamp' || )
-mongoose.connect(, {useNewUrlParser: true});
+var URI = ('mongodb://localhost:27017/yelpcamp')
+mongoose.connect(URI, {useNewUrlParser: true});
 mongoose.set(mongoose, {usefindAndModify: false});
-mongoose.set('debug', true)
+mongoose.set('debug', true);
 
 // PASSPORT
 
@@ -77,6 +77,7 @@ app.post('/campgrounds', isLoggedIn, function(req, res){
         _image: req.body._image,
         info: req.body.info
     }
+    
     Campground.create(camp, function(error, newCamp){
         if(error){
             console.log(error);

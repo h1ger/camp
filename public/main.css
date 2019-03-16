@@ -1,5 +1,48 @@
-
+*{
+    box-sizing: border-box;
+}
 html, body{
     font-family: 'Roboto', sans-serif;
     height: 100%;
+}
+
+.img-thumbnail{
+    height: 120px;
+    width: 100px;
+}
+
+h3{
+    font-size: 3vh;
+}
+
+.form-control{
+    width: 50%;
+    margin: auto;
+
+}
+
+.form-margin{
+    margin-top: 12%;
+}
+
+.btn-mr{
+  margin-bottom: 2%;  
+  margin-top: 2%;  
+
+}
+
+.mt-custom{
+    margin-top: 17%;
+}
+
+textarea{
+    resize: none;
+    width: 50%;
+    margin: auto;
+    display: block;
+}
+
+.img-thumbnail.img-custom{
+   width: 50%;
+   height: 50%;
 }

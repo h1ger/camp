@@ -1,12 +1,18 @@
 <% include ./partials/header %>
-<div class="container">
-    <form action="/campgrounds" method="POST" class="form-group">
-        <p> Title </p>
-        <input class="form-control" type="text" name="title" required>
-        <p> IMG URL </p>
+<div class="container mx-auto text-center mt-5">
+    <form action="/campgrounds" method="POST">
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input class="form-control" type="text" name="title" required>
+        </div>
+        <div class="form-group">        
+         <label for="_image">Image URL </label>
         <input class="form-control" type="text" name="_image">
-        <p> Description </p>
+        </div>
+        <div class="form-group"> 
+        <label for="info">Description</label>
         <textarea name="info" rows="5" cols="100"></textarea>
+        </div>
         <!-- %><input class="form-control" type="text"> -->
         <button class="btn btn-primary ">Submit</button>
     </form>

@@ -3,8 +3,15 @@
     
     <div class="text-center rounded w-15">
         <h2><%= showCamp.title %></h2>
-        <img class="img-thumbnail " src="<%=showCamp._image%>" alt="user_image">
+        <img class="img-thumbnail img-custom" src="<%=showCamp._image%>" alt="user_image">
         <p><%= showCamp.info%></p>
+        <div class="d-flex justify-content-center">
+            <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/comment/new">Comment</a>
+            <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/edit">Edit</a>
+            <form action="/campgrounds/camp/<%=showCamp._id%>?_method=DELETE" method="POST">
+                <button class="btn btn-info">Remove</button>
+            </form>
+        </div>
     </div>
     
     <%showCamp.comment.forEach(function(comment){%>
@@ -15,11 +22,6 @@
         <button class="btn btn-primary">Delete Comment</button>
     </form>
     <%})%>
-    <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/comment/new">Comment</a>
-    <a class="btn btn-success" href="/campgrounds/camp/<%=showCamp._id%>/edit">Edit</a>
-    <form action="/campgrounds/camp/<%=showCamp._id%>?_method=DELETE" method="POST">
-    <button class="btn btn-info">Remove</button>
-    </form>
 </div>
 
 <% include ./partials/footer %>
