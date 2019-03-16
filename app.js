@@ -254,7 +254,8 @@ function isLoggedIn(req, res, next){
     res.redirect('/login');
 }
 
-var port = process.env.port || 3000;
-app.listen(port, function(req, res){
+var port = process.env.PORT || 3000;
+console.log(port);
+app.listen(port, process.env.IP, function(req, res){
     console.log('Serving Hot Coffee!');
 });
